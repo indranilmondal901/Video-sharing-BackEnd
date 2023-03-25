@@ -1,0 +1,22 @@
+{
+  "name": "tuner",
+  "version": "1.0.0",
+  "description": "Video Streaming And Uploading Platfrom",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Indranil Mondal",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^5.1.0",
+    "body-parser": "^1.20.2",
+    "cloudinary": "^1.35.0",
+    "cors": "^2.8.5",
+    "express": "^4.18.2",
+    "express-fileupload": "^1.4.0",
+    "fileupload": "^1.0.0",
+    "jsonwebtoken": "^9.0.0",
+    "mongoose": "^7.0.2"
+  }
+}
