@@ -12,9 +12,10 @@ const router = require('./rout/rout');
 app.use(router)
 
 //listing to server 
-const server = app.listen(port, () => {
+// const server = 
+app.listen(port, () => {
     console.log("Your Server Is Running On Port no ==>" + port)
 })
 //for video
-server.timeout = 600000
+// server.timeout = 600000
 
