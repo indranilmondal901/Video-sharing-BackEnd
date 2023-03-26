@@ -1,9 +1,9 @@
 const mongoose = require('mongoose');
-const url = 'mongodb://localhost:27017';
-const dbName = 'Tuner_User_Api';
-const uri = url + "/" + dbName;
+const url = 'mongodb+srv://10xGroup1:abcd1234@tuner-videosharingproje.g5723nk.mongodb.net/?retryWrites=true&w=majority';
+// const dbName = 'Tuner_User_Api';
+// const uri = url + "/" + dbName;
 
-mongoose.connect(uri, {
+mongoose.connect(url, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
 }).then(() =>

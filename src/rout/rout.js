@@ -150,7 +150,7 @@ router.put("/myvideos", auth, async (req, res) => {
                 const video = await result.url;
                 // console.log("video===>"+ video);
 
-                user.videoes.push({
+                user.videos.push({
                     video: {
                         vfile: video,
                         name: req.body.name,
@@ -177,6 +177,6 @@ router.put("/myvideos", auth, async (req, res) => {
 
 //Home
 //Search
-//Myvideoes
+//Myvideos
 
 module.exports = router;

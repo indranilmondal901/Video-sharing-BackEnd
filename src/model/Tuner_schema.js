@@ -28,7 +28,7 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    videoes: [{
+    videos: [{
         video:{
             vfile : String,
             name: String,
