@@ -140,6 +140,7 @@ router.put("/myvideos", auth, async (req, res) => {
 
         cloudinary.uploader.upload_large(video_files.tempFilePath,{ resource_type: "video" }, async (error, result) => {
             if (error) {
+                // console.log("result=====>"+result)
                 // Handle error
                 console.error(error);
                 return res.status(500).json({
@@ -147,7 +148,7 @@ router.put("/myvideos", auth, async (req, res) => {
                 })
             } else {
                 const video = await result.url;
-                console.log(video);
+                // console.log("video===>"+ video);
 
                 user.videoes.push({
                     video: {
