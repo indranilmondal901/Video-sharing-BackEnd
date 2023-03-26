@@ -194,7 +194,7 @@ router.get("/", async (req, res) => {
     try {
         const users = await TunerUser.find({}, "videos.video");
         const videos = users.reduce((acc, user) => {
-            const publicVideos = user.videos.filter(video => video.video.visibility === "public");
+            const publicVideos = user.videos.filter(video => video.video.visibility === "Public");
             return acc.concat(publicVideos);
         }, []);
         res.status(200).send({
@@ -208,6 +208,8 @@ router.get("/", async (req, res) => {
     }
 });
 
+
+//Search
 
 
 
