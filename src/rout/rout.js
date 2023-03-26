@@ -138,7 +138,7 @@ router.put("/myvideos", auth, async (req, res) => {
         const user = req.user;
         const video_files = req.files.video; // retrieve the file data from the request body
 
-        cloudinary.uploader.upload_large(video_files.tempFilePath,{ resource_type: "video" }, async (error, result) => {
+        cloudinary.uploader.upload_large(video_files.tempFilePath, { resource_type: "video" }, async (error, result) => {
             if (error) {
                 // console.log("result=====>"+result)
                 // Handle error
@@ -150,7 +150,7 @@ router.put("/myvideos", auth, async (req, res) => {
                 const video = await result.url;
                 // console.log("video===>"+ video);
 
-                user.videoes.push({
+                user.videos.push({
                     video: {
                         vfile: video,
                         name: req.body.name,
@@ -176,7 +176,49 @@ router.put("/myvideos", auth, async (req, res) => {
 
 
 //Home
+// router.get("/", async (req, res) => {
+//     try {
+//         const users = await TunerUser.find({}, "videos.video");
+//         const videos = users.map(user => user.videos);
+//         res.status(200).send({
+//             data: videos
+//         });
+//     } catch (err) {
+//         console.error(err);
+//         res.status(500).send({
+//             message: "Error retrieving videos"
+//         });
+//     }
+// });
+router.get("/", async (req, res) => {
+    try {
+        const users = await TunerUser.find({}, "videos.video");
+        const videos = users.reduce((acc, user) => {
+            const publicVideos = user.videos.filter(video => video.video.visibility === "Public");
+            return acc.concat(publicVideos);
+        }, []);
+        res.status(200).send({
+            data: videos
+        });
+    } catch (err) {
+        console.error(err);
+        res.status(500).send({
+            message: "Error retrieving videos"
+        });
+    }
+});
+
+
 //Search
-//Myvideoes
+
+
+
+
+
+
+
+
+
+//Myvideos
 
 module.exports = router;
