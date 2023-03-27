@@ -84,12 +84,12 @@ router.post("/login", async (req, res) => {
 
     if (loginUserData) {
         const checkPassword = await bcrypt.compare(enteredPassword, loginUserData.password);
-        console.log(checkPassword);
+        // console.log(checkPassword);
         if (checkPassword) {
             const token = await loginUserData.generateAuthToken();
-            console.log(` logintoken from rout.js==> ${token}`)
+            // console.log(` logintoken from rout.js==> ${token}`)
 
-            console.log("login sucessfully");
+            // console.log("login sucessfully");
 
             res.status(200).send({
                 status: "login sucessfully",
@@ -97,14 +97,14 @@ router.post("/login", async (req, res) => {
                 user: loginUserData
             })
         } else {
-            console.log("password not match");
+            // console.log("password not match");
             res.status(500).send({
                 status: 500,
                 message: "invalid credential"
             })
         }
     } else {
-        console.log("userdata not match");
+        // console.log("userdata not match");
         res.status(500).send({
             status: 500,
             message: "invalid credential"
@@ -114,7 +114,7 @@ router.post("/login", async (req, res) => {
 //logout
 router.post("/logout", auth, async (req, res) => {
     try {
-        console.log(`this user is logged out ==> ${req.user.name}`)
+        // console.log(`this user is logged out ==> ${req.user.name}`)
         //logout from all devices
         req.user.tokens = [];
         req.user.save();
@@ -142,7 +142,7 @@ router.put("/myvideos", auth, async (req, res) => {
             if (error) {
                 // console.log("result=====>"+result)
                 // Handle error
-                console.error(error);
+                // console.error(error);
                 return res.status(500).json({
                     message: 'Failed to upload video'
                 })
@@ -176,20 +176,6 @@ router.put("/myvideos", auth, async (req, res) => {
 
 
 //Home
-// router.get("/", async (req, res) => {
-//     try {
-//         const users = await TunerUser.find({}, "videos.video");
-//         const videos = users.map(user => user.videos);
-//         res.status(200).send({
-//             data: videos
-//         });
-//     } catch (err) {
-//         console.error(err);
-//         res.status(500).send({
-//             message: "Error retrieving videos"
-//         });
-//     }
-// });
 router.get("/", async (req, res) => {
     try {
         const users = await TunerUser.find({}, "videos.video");
@@ -201,7 +187,7 @@ router.get("/", async (req, res) => {
             data: videos
         });
     } catch (err) {
-        console.error(err);
+        // console.error(err);
         res.status(500).send({
             message: "Error retrieving videos"
         });
@@ -210,15 +196,54 @@ router.get("/", async (req, res) => {
 
 
 //Search
+router.get("/search", async (req, res) => {
+    try {
+        const keyword = req.query.keyword; // assuming the keyword is passed as a query parameter
+        const regex = new RegExp(keyword, "i"); // create a case-insensitive regular expression with the keyword
+
+        const users = await TunerUser.find({}, "videos.video");
+
+        const videos = users.reduce((acc, user) => {
+            const matchingVideos = user.videos.filter(video => {
+                return (
+                    (regex.test(video.video.name) || regex.test(video.video.description) || regex.test(video.video.category)) &&
+                    video.video.visibility === "Public"
+                );
+            });
+            return acc.concat(matchingVideos);
+        }, []);
+
+        res.status(200).send({
+            data: videos
+        });
+    } catch (err) {
+        // console.error(err);
+        res.status(500).send({
+            message: "Error retrieving videos"
+        });
+    }
+});
 
 
+//myvideos
+router.post("/myvideos",auth,async(req,res)=>{
+    try{
+        const user = req.user; // geting userdata a/c details
+        const data = user.videos;
+        // console.log(data)
+        res.status(200).send({
+            userName: user.name,
+            userDp: user.imgfile,
+            data: data
+        })
 
+    }catch(err){
+        // console.error(err);
+        res.status(500).send({
+            message: "This User not uploaded any video"
+        });
+    }
+})
 
-
-
-
-
-
-//Myvideos
 
 module.exports = router;
