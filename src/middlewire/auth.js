@@ -4,12 +4,12 @@ const jwt = require('jsonwebtoken');
 const auth = async (req,res,next) => {
     try{
         let token = req.body.token;
-        console.log("from auth.js==>" + token);
+        // console.log("from auth.js==>" + token);
         // if(!token){
         //     res.sendStatus(401);
         // }else{
             const verifyUser = jwt.verify(token,"mnbvcxzasdfhghjkloiuyytreewqplmkonjibhuyv");
-            console.log(verifyUser);
+            // console.log(verifyUser);
             if(!verifyUser){
                 res.sendStatus(402);
             }
